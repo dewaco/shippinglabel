@@ -2,7 +2,6 @@ package shippinglabel
 
 import (
 	"context"
-	"github.com/dewaco/shippinglabel/types"
 	"os"
 	"reflect"
 	"sync"
@@ -54,13 +53,13 @@ func TestClient_Error(t *testing.T) {
 		t.Fatalf("expected error")
 	}
 
-	_, ok := err.(*types.Error)
+	_, ok := err.(*Error)
 	if !ok {
 		t.Fatalf("expected error from type: %T", err)
 	}
 
 	switch err.(type) {
-	case *types.Error:
+	case *Error:
 		break
 	default:
 		t.Fatalf("expected error from type: %T", err)
@@ -77,7 +76,7 @@ func TestClient_RefreshToken(t *testing.T) {
 	isNoError(t, err)
 	isNotNil(t, user)
 
-	apiFromRefresh, err := client.APIContext(types.NewToken(api.token.RefreshToken))
+	apiFromRefresh, err := client.APIContext(NewToken(api.token.RefreshToken))
 	isNoError(t, err)
 	isNotNil(t, apiFromRefresh)
 
@@ -135,7 +134,7 @@ func TestAPIContext_ParcelCRUD(t *testing.T) {
 	initClientAndAPIContext(t)
 
 	var err error
-	parcel := &types.Parcel{
+	parcel := &Parcel{
 		Name:        "Test",
 		Description: "Test Parcel",
 		Weight:      150,

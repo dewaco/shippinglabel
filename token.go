@@ -1,4 +1,4 @@
-package types
+package shippinglabel
 
 import (
 	"time"
@@ -24,7 +24,7 @@ func NewToken(refreshToken string) *AuthToken {
 
 // SetExpirationTime converts the ExpiresIn value to a time.Time
 func (m *AuthToken) SetExpirationTime() {
-	m.expirationTime = time.Now().UTC().Add(time.Duration(m.ExpiresIn) * time.Second)
+	m.expirationTime = time.Now().UTC().Add(time.Duration(m.ExpiresIn) * time.Second).Add(-2 * time.Minute)
 }
 
 // IsExpired returns whether the access token has expired

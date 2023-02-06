@@ -1,4 +1,4 @@
-package types
+package shippinglabel
 
 type Status struct {
 	Code  int    `json:"code,omitempty"`

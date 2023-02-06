@@ -1,4 +1,4 @@
-package types
+package shippinglabel
 
 type Parcel struct {
 	ID          int     `json:"id,omitempty"`

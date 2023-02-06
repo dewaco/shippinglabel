@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/dewaco/shippinglabel/types"
 	"golang.org/x/net/http2"
 	"io"
 	"net/http"
@@ -24,7 +23,7 @@ type Client struct {
 
 func NewClient(clientID string, clientSecret string) (*Client, error) {
 	if clientID == "" || clientSecret == "" {
-		return nil, types.ErrRequiredClientIDAndSecret
+		return nil, ErrRequiredClientIDAndSecret
 	}
 
 	c := &Client{clientID: clientID, clientSecret: clientSecret}
@@ -68,7 +67,7 @@ func (c *Client) defaultHTTPClient() *http.Client {
 }
 
 // APIContext creates a token specific context for the REST API
-func (c *Client) APIContext(token *types.AuthToken) (*APIContext, error) {
+func (c *Client) APIContext(token *AuthToken) (*APIContext, error) {
 	return NewAPIContext(c, token)
 }
 
@@ -88,7 +87,7 @@ func (c *Client) send(ctx context.Context, req *request) error {
 
 	// Check status code
 	if resp.StatusCode >= 400 {
-		em := &types.Error{}
+		em := &Error{}
 		if err = json.NewDecoder(resp.Body).Decode(em); err != nil {
 			return err
 		}
@@ -106,8 +105,8 @@ func (c *Client) send(ctx context.Context, req *request) error {
 }
 
 // sendTokenRequest sends a request to receive an access token for the ClientCredentials, AuthorizationCode and RefreshToken functions
-func (c *Client) sendTokenRequest(ctx context.Context, qs url.Values) (*types.AuthToken, error) {
-	var tk *types.AuthToken
+func (c *Client) sendTokenRequest(ctx context.Context, qs url.Values) (*AuthToken, error) {
+	var tk *AuthToken
 	req := newRequest(c.baseURL).SetBasicAuth(c.clientID, c.clientSecret).SetFormValues(qs).ToJSON(&tk).
 		SetMethod(http.MethodPost).SetPath("/oauth2/token")
 	if err := c.send(ctx, req); err != nil {
@@ -118,7 +117,7 @@ func (c *Client) sendTokenRequest(ctx context.Context, qs url.Values) (*types.Au
 }
 
 // ClientCredentials creates an access token with the client credentials
-func (c *Client) ClientCredentials(ctx context.Context) (*types.AuthToken, error) {
+func (c *Client) ClientCredentials(ctx context.Context) (*AuthToken, error) {
 	qs := url.Values{}
 	qs.Add("grant_type", "client_credentials")
 	return c.sendTokenRequest(ctx, qs)
@@ -136,7 +135,7 @@ func (c *Client) AuthCodeURL(redirectURL string, state string) string {
 }
 
 // AuthorizationCode exchanges the authorization code for an access token
-func (c *Client) AuthorizationCode(ctx context.Context, authCode string) (resp *types.AuthToken, err error) {
+func (c *Client) AuthorizationCode(ctx context.Context, authCode string) (resp *AuthToken, err error) {
 	qs := url.Values{}
 	qs.Add("grant_type", "authorization_code")
 	qs.Add("code", authCode)
@@ -144,7 +143,7 @@ func (c *Client) AuthorizationCode(ctx context.Context, authCode string) (resp *
 }
 
 // RefreshToken creates an access token through a refresh token
-func (c *Client) RefreshToken(ctx context.Context, refreshToken string) (resp *types.AuthToken, err error) {
+func (c *Client) RefreshToken(ctx context.Context, refreshToken string) (resp *AuthToken, err error) {
 	qs := url.Values{}
 	qs.Add("grant_type", "refresh_token")
 	qs.Add("refresh_token", refreshToken)

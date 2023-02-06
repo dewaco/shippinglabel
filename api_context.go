@@ -3,7 +3,6 @@ package shippinglabel
 import (
 	"bytes"
 	"context"
-	"github.com/dewaco/shippinglabel/types"
 	"net/http"
 	"strconv"
 	"strings"
@@ -12,17 +11,17 @@ import (
 
 type APIContext struct {
 	client     *Client
-	token      *types.AuthToken
+	token      *AuthToken
 	tokenMutex sync.RWMutex
 }
 
 // NewAPIContext creates an API context
-func NewAPIContext(c *Client, token *types.AuthToken) (*APIContext, error) {
+func NewAPIContext(c *Client, token *AuthToken) (*APIContext, error) {
 	if c == nil {
-		return nil, types.ErrRequiredClient
+		return nil, ErrRequiredClient
 	}
 	if token == nil {
-		return nil, types.ErrRequiredToken
+		return nil, ErrRequiredToken
 	}
 	return &APIContext{client: c, token: token}, nil
 }
@@ -55,7 +54,7 @@ func (c *APIContext) send(ctx context.Context, req *request) error {
 
 // GetUser returns the user details
 // [GET]: /user
-func (c *APIContext) GetUser(ctx context.Context) (resp *types.User, err error) {
+func (c *APIContext) GetUser(ctx context.Context) (resp *User, err error) {
 	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPath("/user")
 	return resp, c.send(ctx, req)
 }
@@ -64,7 +63,7 @@ func (c *APIContext) GetUser(ctx context.Context) (resp *types.User, err error) 
 
 // Metadata returns the carrier metadata
 // [GET]: /metadata/carriers/details
-func (c *APIContext) Metadata(ctx context.Context) (resp *types.CarrierMetadata, err error) {
+func (c *APIContext) Metadata(ctx context.Context) (resp *CarrierMetadata, err error) {
 	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPath("/metadata/carriers/details")
 	return resp, c.send(ctx, req)
 }
@@ -73,28 +72,28 @@ func (c *APIContext) Metadata(ctx context.Context) (resp *types.CarrierMetadata,
 
 // ListAddresses returns all available user addresses
 // [GET]: /addresses
-func (c *APIContext) ListAddresses(ctx context.Context) (resp []*types.Address, err error) {
+func (c *APIContext) ListAddresses(ctx context.Context) (resp []*Address, err error) {
 	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPath("/addresses")
 	return resp, c.send(ctx, req)
 }
 
 // CreateAddress creates a new shipment address
 // [POST]: /addresses
-func (c *APIContext) CreateAddress(ctx context.Context, v *types.Address) (resp *types.Address, err error) {
+func (c *APIContext) CreateAddress(ctx context.Context, v *Address) (resp *Address, err error) {
 	req := c.request().SetMethod(http.MethodPost).SetJSON(v).ToJSON(&resp).SetPath("/addresses")
 	return resp, c.send(ctx, req)
 }
 
 // GetAddress returns an address
 // [GET]: /addresses/{id}
-func (c *APIContext) GetAddress(ctx context.Context, id int) (resp *types.Address, err error) {
+func (c *APIContext) GetAddress(ctx context.Context, id int) (resp *Address, err error) {
 	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPathf("/addresses/%d", id)
 	return resp, c.send(ctx, req)
 }
 
 // UpdateAddress updates a shipment address
 // [PUT]: /addresses/{id}
-func (c *APIContext) UpdateAddress(ctx context.Context, v *types.Address) (err error) {
+func (c *APIContext) UpdateAddress(ctx context.Context, v *Address) (err error) {
 	req := c.request().SetMethod(http.MethodPut).SetJSON(v).SetPathf("/addresses/%d", v.ID)
 	return c.send(ctx, req)
 }
@@ -110,28 +109,28 @@ func (c *APIContext) DeleteAddress(ctx context.Context, id int) (err error) {
 
 // ListParcels returns all parcels
 // [GET]: /parcels
-func (c *APIContext) ListParcels(ctx context.Context) (resp []*types.Parcel, err error) {
+func (c *APIContext) ListParcels(ctx context.Context) (resp []*Parcel, err error) {
 	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPath("/parcels")
 	return resp, c.send(ctx, req)
 }
 
 // CreateParcel creates a parcel
 // [POST]: /parcels
-func (c *APIContext) CreateParcel(ctx context.Context, v *types.Parcel) (resp *types.Parcel, err error) {
+func (c *APIContext) CreateParcel(ctx context.Context, v *Parcel) (resp *Parcel, err error) {
 	req := c.request().SetMethod(http.MethodPost).ToJSON(&resp).SetJSON(v).SetPath("/parcels")
 	return resp, c.send(ctx, req)
 }
 
 // GetParcel returns a parcel
 // [GET]: /parcels/{id}
-func (c *APIContext) GetParcel(ctx context.Context, id int) (resp *types.Parcel, err error) {
+func (c *APIContext) GetParcel(ctx context.Context, id int) (resp *Parcel, err error) {
 	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPathf("/parcels/%d", id)
 	return resp, c.send(ctx, req)
 }
 
 // UpdateParcel updates a parcel
 // [PUT]: /parcels/{id}
-func (c *APIContext) UpdateParcel(ctx context.Context, v *types.Parcel) (err error) {
+func (c *APIContext) UpdateParcel(ctx context.Context, v *Parcel) (err error) {
 	req := c.request().SetMethod(http.MethodPut).SetJSON(v).SetPathf("/parcels/%d", v.ID)
 	return c.send(ctx, req)
 }
@@ -147,49 +146,49 @@ func (c *APIContext) DeleteParcel(ctx context.Context, id int) (err error) {
 
 // ListCarriers returns all user created carriers
 // [GET]: /carriers
-func (c *APIContext) ListCarriers(ctx context.Context) (resp []*types.Carrier, err error) {
+func (c *APIContext) ListCarriers(ctx context.Context) (resp []*Carrier, err error) {
 	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPath("/carriers")
 	return resp, c.send(ctx, req)
 }
 
 // CreateCarrier creates a carrier
 // [POST]: /carriers
-func (c *APIContext) CreateCarrier(ctx context.Context, v *types.Carrier) (resp *types.Carrier, err error) {
+func (c *APIContext) CreateCarrier(ctx context.Context, v *Carrier) (resp *Carrier, err error) {
 	req := c.request().SetMethod(http.MethodPost).ToJSON(&resp).SetJSON(v).SetPath("/carriers")
 	return resp, c.send(ctx, req)
 }
 
 // GetCarrier returns a carrier
 // [GET]: /carriers/{id}
-func (c *APIContext) GetCarrier(ctx context.Context, code types.CarrierCode) (resp *types.Carrier, err error) {
+func (c *APIContext) GetCarrier(ctx context.Context, code CarrierCode) (resp *Carrier, err error) {
 	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPathf("/carriers/%s", code)
 	return resp, c.send(ctx, req)
 }
 
 // UpdateCarrier updates a carrier
 // [PUT]: /carriers/{id}
-func (c *APIContext) UpdateCarrier(ctx context.Context, v *types.Carrier) (err error) {
+func (c *APIContext) UpdateCarrier(ctx context.Context, v *Carrier) (err error) {
 	req := c.request().SetMethod(http.MethodPut).SetJSON(v).SetPathf("/carriers/%s", v.Code)
 	return c.send(ctx, req)
 }
 
 // UpdateCarrierCredentials updates the user credentials from the carrier
 // [PUT]: /carriers/{id}/cred
-func (c *APIContext) UpdateCarrierCredentials(ctx context.Context, v *types.Carrier) (err error) {
+func (c *APIContext) UpdateCarrierCredentials(ctx context.Context, v *Carrier) (err error) {
 	req := c.request().SetMethod(http.MethodPut).SetJSON(v).SetPathf("/carriers/%s/credentials", v.Code)
 	return c.send(ctx, req)
 }
 
 // VerifyCarrier validates the user credentials
 // [POST]: /carriers/{id}/verify
-func (c *APIContext) VerifyCarrier(ctx context.Context, code types.CarrierCode) (err error) {
+func (c *APIContext) VerifyCarrier(ctx context.Context, code CarrierCode) (err error) {
 	req := c.request().SetMethod(http.MethodPost).SetPathf("/carriers/%s/verify", code)
 	return c.send(ctx, req)
 }
 
 // DeleteCarrier deletes a carrier
 // [DELETE]: /carriers/{id}
-func (c *APIContext) DeleteCarrier(ctx context.Context, code types.CarrierCode) (err error) {
+func (c *APIContext) DeleteCarrier(ctx context.Context, code CarrierCode) (err error) {
 	req := c.request().SetMethod(http.MethodDelete).SetPathf("/carriers/%s", code)
 	return c.send(ctx, req)
 }
@@ -198,14 +197,14 @@ func (c *APIContext) DeleteCarrier(ctx context.Context, code types.CarrierCode) 
 
 // CreateDHLProduct creates a DHL product
 // [POST]: /carriers/DHL/products
-func (c *APIContext) CreateDHLProduct(ctx context.Context, v *types.DHLProduct) (resp *types.DHLProduct, err error) {
+func (c *APIContext) CreateDHLProduct(ctx context.Context, v *DHLProduct) (resp *DHLProduct, err error) {
 	req := c.request().SetMethod(http.MethodPost).SetJSON(v).ToJSON(&resp).SetPath("/carriers/DHL/products")
 	return resp, c.send(ctx, req)
 }
 
 // UpdateDHLProduct updates a DHL product
 // [PUT]: /carriers/DHL/products/{id}
-func (c *APIContext) UpdateDHLProduct(ctx context.Context, v *types.DHLProduct) (err error) {
+func (c *APIContext) UpdateDHLProduct(ctx context.Context, v *DHLProduct) (err error) {
 	req := c.request().SetMethod(http.MethodPut).SetJSON(v).SetPathf("/carriers/DHL/products/%d", v.ID)
 	return c.send(ctx, req)
 }
@@ -226,7 +225,7 @@ func (c *APIContext) DeleteDHLProduct(ctx context.Context, id int) (err error) {
 // first 10 shipments. page = 1 and page_size=10 return the next shipments (11-20). Default: 0
 // page_size: The maximum number of shipments to return in the response. Must be an integer between 0 and 10000. Default: 10000
 // order: Specifies the order of shipments. Available values are 'asc' or 'desc'. Default: asc
-func (c *APIContext) ListShipments(ctx context.Context, page int, size int, order string) (resp []*types.Shipment, err error) {
+func (c *APIContext) ListShipments(ctx context.Context, page int, size int, order string) (resp []*Shipment, err error) {
 	if page < 0 {
 		page = 0
 	}
@@ -245,28 +244,28 @@ func (c *APIContext) ListShipments(ctx context.Context, page int, size int, orde
 
 // ValidateShipment validates a shipment
 // [POST]: /shipments/validate
-func (c *APIContext) ValidateShipment(ctx context.Context, v *types.Shipment) (err error) {
+func (c *APIContext) ValidateShipment(ctx context.Context, v *Shipment) (err error) {
 	req := c.request().SetMethod(http.MethodPost).SetJSON(v).SetPath("/shipments/validate")
 	return c.send(ctx, req)
 }
 
 // CreateShipment creates a shipment
 // [POST]: /shipments
-func (c *APIContext) CreateShipment(ctx context.Context, v *types.Shipment) (resp *types.Shipment, err error) {
+func (c *APIContext) CreateShipment(ctx context.Context, v *Shipment) (resp *Shipment, err error) {
 	req := c.request().SetMethod(http.MethodPost).SetJSON(v).ToJSON(&resp).SetPath("/shipments")
 	return resp, c.send(ctx, req)
 }
 
 // GetShipment returns a shipment
 // [GET]: /shipments/{id}
-func (c *APIContext) GetShipment(ctx context.Context, id int) (resp *types.Shipment, err error) {
+func (c *APIContext) GetShipment(ctx context.Context, id int) (resp *Shipment, err error) {
 	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPathf("/shipments/%d", id)
 	return resp, c.send(ctx, req)
 }
 
 // UpdateShipment updates a shipment
 // [PUT]: /shipments/{id}
-func (c *APIContext) UpdateShipment(ctx context.Context, v *types.Shipment) (err error) {
+func (c *APIContext) UpdateShipment(ctx context.Context, v *Shipment) (err error) {
 	req := c.request().SetMethod(http.MethodPut).SetJSON(v).SetPathf("/shipments/%d", v.ID)
 	return c.send(ctx, req)
 }
@@ -280,7 +279,7 @@ func (c *APIContext) DeleteShipment(ctx context.Context, id int) (err error) {
 
 // CreateShipments creates multiple shipments
 // [POST]: /shipments/bulk
-func (c *APIContext) CreateShipments(ctx context.Context, v []*types.Shipment) (resp []*types.Shipment, err error) {
+func (c *APIContext) CreateShipments(ctx context.Context, v []*Shipment) (resp []*Shipment, err error) {
 	req := c.request().SetMethod(http.MethodPost).SetJSON(v).ToJSON(&resp).SetPath("/shipments/bulk")
 	return resp, c.send(ctx, req)
 }
@@ -295,17 +294,26 @@ func (c *APIContext) GetLabel(ctx context.Context, id int) (resp *bytes.Buffer, 
 
 // GetLabels returns labels in PDF format
 // [GET]: /shipments/labels/{id1,id2,...,idn}
-func (c *APIContext) GetLabels(ctx context.Context, ids []int) (resp *bytes.Buffer, err error) {
-	if len(ids) == 0 {
-		return nil, types.ErrRequiredID
+// Value: 'ids' can be from type []string or []int
+func (c *APIContext) GetLabels(ctx context.Context, ids any) (resp *bytes.Buffer, err error) {
+	var sIDs []string
+
+	switch ids.(type) {
+	case []string:
+		sIDs = ids.([]string)
+	case []int:
+		for _, id := range ids.([]int) {
+			sIDs = append(sIDs, strconv.Itoa(id))
+		}
+	default:
+		return nil, ErrWrongType
 	}
 
-	sids := make([]string, 0)
-	for _, id := range ids {
-		sids = append(sids, strconv.Itoa(id))
+	if len(sIDs) == 0 {
+		return nil, ErrRequiredID
 	}
 
 	resp = bytes.NewBuffer(nil)
-	req := c.request().SetMethod(http.MethodGet).ToBytesBuffer(resp).SetPathf("/shipments/labels/%s", strings.Join(sids, ","))
+	req := c.request().SetMethod(http.MethodGet).ToBytesBuffer(resp).SetPathf("/shipments/labels/%s", strings.Join(sIDs, ","))
 	return resp, c.send(ctx, req)
 }

@@ -1,4 +1,4 @@
-package types
+package shippinglabel
 
 import "errors"
 
@@ -7,6 +7,7 @@ var (
 	ErrRequiredClient            = errors.New("client is required")
 	ErrRequiredToken             = errors.New("token is required")
 	ErrRequiredID                = errors.New("id is required")
+	ErrWrongType                 = errors.New("wrong type")
 )
 
 type Error struct {

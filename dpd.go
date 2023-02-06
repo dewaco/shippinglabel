@@ -1,4 +1,4 @@
-package types
+package shippinglabel
 
 type DPDDetails struct {
 	DefaultProduct string `json:"defaultProduct,omitempty"`

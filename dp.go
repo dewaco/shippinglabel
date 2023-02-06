@@ -1,4 +1,4 @@
-package types
+package shippinglabel
 
 type DPDetails struct {
 	LabelFormat    string `json:"labelFormat,omitempty"`

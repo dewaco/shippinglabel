@@ -18,7 +18,6 @@ package main
 import (
 	"context"
 	"github.com/dewaco/shippinglabel"
-	"github.com/dewaco/shippinglabel/types"
 )
 
 func main() {
@@ -39,7 +38,7 @@ func main() {
 	// Handle error
 	
 	// Request: Create parcel
-	parcel, err := api.CreateParcel(ctx, &types.Parcel{})
+	parcel, err := api.CreateParcel(ctx, &shippinglabel.Parcel{})
 	// Handle error
 	
 	// Request: Delete a shipment
@@ -58,7 +57,6 @@ package main
 import (
 	"context"
 	"github.com/dewaco/shippinglabel"
-	"github.com/dewaco/shippinglabel/types"
 )
 
 func main() {
@@ -73,7 +71,7 @@ func main() {
 	// Parse error
 	if err != nil {
 		switch err.(type) {
-		case *types.Error:
+		case *shippinglabel.Error:
 			// Is response error
 			break
 		default:
@@ -81,7 +79,7 @@ func main() {
 		}
 		
 		// Another way
-		_, ok := err.(*types.Error)
+		_, ok := err.(*shippinglabel.Error)
 		if ok {
 			// Is response error
         }
