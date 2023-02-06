@@ -36,7 +36,7 @@ func (c *APIContext) request() *request {
 func (c *APIContext) send(ctx context.Context, req *request) error {
 	c.tokenMutex.Lock()
 	if c.token != nil && c.token.IsExpired() {
-		tk, err := c.client.RefreshToken(context.Background(), c.token.RefreshToken)
+		tk, err := c.client.RefreshToken(ctx, c.token.RefreshToken)
 		if err != nil {
 			c.tokenMutex.Unlock()
 			return err

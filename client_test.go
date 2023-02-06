@@ -72,7 +72,16 @@ func TestClient_RefreshToken(t *testing.T) {
 	api.token.ExpiresIn = -5000
 	api.token.SetExpirationTime()
 
-	user, err := api.GetUser(context.Background())
+	ctx := context.Background()
+	user, err := api.GetUser(ctx)
+	isNoError(t, err)
+	isNotNil(t, user)
+
+	apiFromRefresh, err := client.APIContext(types.NewToken(api.token.RefreshToken))
+	isNoError(t, err)
+	isNotNil(t, apiFromRefresh)
+
+	user, err = apiFromRefresh.GetUser(ctx)
 	isNoError(t, err)
 	isNotNil(t, user)
 }
