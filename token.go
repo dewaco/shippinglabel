@@ -5,11 +5,12 @@ import (
 )
 
 type AuthToken struct {
-	AccessToken    string `json:"accessToken,omitempty"`
-	ExpiresIn      int    `json:"expiresIn,omitempty"`
-	RefreshToken   string `json:"refreshToken,omitempty"`
-	TokenType      string `json:"tokenType,omitempty"`
-	expirationTime time.Time
+	AccessToken           string `json:"accessToken,omitempty"`
+	ExpiresIn             int    `json:"expiresIn,omitempty"`
+	RefreshToken          string `json:"refreshToken,omitempty"`
+	RefreshTokenExpiresIn int    `json:"refreshTokenExpiresIn,omitempty"`
+	TokenType             string `json:"tokenType,omitempty"`
+	expirationTime        time.Time
 }
 
 // NewToken creates a new struct from a refresh token
