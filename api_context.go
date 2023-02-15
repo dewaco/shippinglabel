@@ -62,9 +62,9 @@ func (c *APIContext) GetUser(ctx context.Context) (resp *User, err error) {
 // METADATA
 
 // Metadata returns the carrier metadata
-// [GET]: /metadata/carriers/details
-func (c *APIContext) Metadata(ctx context.Context) (resp *CarrierMetadata, err error) {
-	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPath("/metadata/carriers/details")
+// [GET]: /metadata/carriers
+func (c *APIContext) Metadata(ctx context.Context) (resp []*CarrierMetadata, err error) {
+	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPath("/metadata/carriers")
 	return resp, c.send(ctx, req)
 }
 

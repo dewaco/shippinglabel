@@ -1,54 +1,16 @@
 package shippinglabel
 
 type CarrierMetadata struct {
-	Carriers []*Carrier `json:"carriers,omitempty"`
-	DHL      struct {
-		Products     []*DHLProduct  `json:"products,omitempty"`
-		LabelFormats []*LabelFormat `json:"labelFormats,omitempty"`
-	} `json:"dhl,omitempty"`
-	DP struct {
-		Products     []*DPProduct     `json:"products,omitempty"`
-		LabelFormats []*DPLabelFormat `json:"labelFormats,omitempty"`
-	} `json:"dp,omitempty"`
-	DPD struct {
-		Products     []*Product     `json:"products,omitempty"`
-		LabelFormats []*LabelFormat `json:"labelFormats,omitempty"`
-	} `json:"dpd,omitempty"`
+	Code         CarrierCode    `json:"carrierCode,omitempty"`
+	Name         string         `json:"name,omitempty"`
+	Products     []*Product     `json:"products,omitempty"`
+	LabelFormats []*LabelFormat `json:"labelFormats,omitempty"`
 }
 
 type Product struct {
-	Product string `json:"product,omitempty"`
-	Name    string `json:"name,omitempty"`
-}
-
-type LabelFormat struct {
-	LabelFormat string `json:"labelFormat,omitempty"`
-	Name        string `json:"name,omitempty"`
-}
-
-type DHLProduct struct {
-	ID int `json:"id,omitempty"`
-	Product
-	Procedure                   string `json:"procedure,omitempty"`
-	UserParticipation           string `json:"userParticipation,omitempty"`
-	PreferredNeighbour          bool   `json:"preferredNeighbour,omitempty"`
-	PreferredLocation           bool   `json:"preferredLocation,omitempty"`
-	VisualCheckOfAge            bool   `json:"visualCheckOfAge,omitempty"`
-	NamedPersonOnly             bool   `json:"namedPersonOnly,omitempty"`
-	IdentCheck                  bool   `json:"identCheck,omitempty"`
-	PreferredDay                bool   `json:"preferredDay,omitempty"`
-	NoNeighbourDelivery         bool   `json:"noNeighbourDelivery,omitempty"`
-	GoGreen                     bool   `json:"goGreen,omitempty"`
-	AdditionalInsurance         bool   `json:"additionalInsurance,omitempty"`
-	BulkyGoods                  bool   `json:"bulkyGoods,omitempty"`
-	CashOnDelivery              bool   `json:"cashOnDelivery,omitempty"`
-	IndividualSenderRequirement bool   `json:"individualSenderRequirement,omitempty"`
-	PackagingReturn             bool   `json:"packagingReturn,omitempty"`
-	ParcelOutletRouting         bool   `json:"parcelOutletRouting,omitempty"`
-}
-
-type DPProduct struct {
-	Product
+	ID              int     `json:"id,omitempty"`
+	Product         string  `json:"product,omitempty"`
+	Name            string  `json:"name,omitempty"`
 	Annotation      string  `json:"annotation,omitempty"`
 	Price           float64 `json:"price,omitempty"`
 	IsInternational bool    `json:"isInternational,omitempty"`
@@ -62,9 +24,30 @@ type DPProduct struct {
 	MaxHeight       int     `json:"maxHeight,omitempty"`
 }
 
-type DPLabelFormat struct {
-	LabelFormat
-	IsAddressPossible bool `json:"isAddressPossible,omitempty"`
-	LabelCountX       int  `json:"labelCountX,omitempty"`
-	LabelCountY       int  `json:"labelCountY,omitempty"`
+type LabelFormat struct {
+	ID              int    `json:"id,omitempty"`
+	LabelFormat     string `json:"labelFormat,omitempty"`
+	Name            string `json:"name,omitempty"`
+	HasAddressField bool   `json:"hasAddressField,omitempty"`
+	LabelCountX     int    `json:"labelCountX,omitempty"`
+	LabelCountY     int    `json:"labelCountY,omitempty"`
+}
+
+type DHLProduct struct {
+	ID                  int    `json:"id,omitempty"`
+	Product             string `json:"product,omitempty"`
+	Name                string `json:"name,omitempty"`
+	UserParticipation   string `json:"userParticipation,omitempty"`
+	PreferredNeighbour  bool   `json:"preferredNeighbour,omitempty"`
+	PreferredLocation   bool   `json:"preferredLocation,omitempty"`
+	VisualCheckOfAge    bool   `json:"visualCheckOfAge,omitempty"`
+	NamedPersonOnly     bool   `json:"namedPersonOnly,omitempty"`
+	IdentCheck          bool   `json:"identCheck,omitempty"`
+	PreferredDay        bool   `json:"preferredDay,omitempty"`
+	NoNeighbourDelivery bool   `json:"noNeighbourDelivery,omitempty"`
+	AdditionalInsurance bool   `json:"additionalInsurance,omitempty"`
+	BulkyGoods          bool   `json:"bulkyGoods,omitempty"`
+	CashOnDelivery      bool   `json:"cashOnDelivery,omitempty"`
+	PackagingReturn     bool   `json:"packagingReturn,omitempty"`
+	ParcelOutletRouting bool   `json:"parcelOutletRouting,omitempty"`
 }
