@@ -4,11 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"golang.org/x/net/http2"
 	"io"
 	"net/http"
 	"net/url"
 	"time"
+
+	"golang.org/x/net/http2"
 )
 
 const productionURL = "https://api.shippinglabel.de/v2"
@@ -126,6 +127,7 @@ func (c *Client) ClientCredentials(ctx context.Context) (*AuthToken, error) {
 // AuthCodeURL creates a redirect url for the shippinglabel oauth process (AuthorizationCode)
 func (c *Client) AuthCodeURL(redirectURL string, state string) string {
 	qs := url.Values{}
+	qs.Add("client_id", c.clientID)
 	qs.Add("redirect_uri", redirectURL)
 	qs.Add("response_type", "code")
 	if state != "" {

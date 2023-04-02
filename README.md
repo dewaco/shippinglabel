@@ -1,6 +1,7 @@
 # Golang SDK for the Shippinglabel REST API
 
-This Golang package is an SDK for the Shippinglabel REST API (https://shippinglabel.de). Documentation can be found at https://developer.dev.shippinglabel.de
+This Golang package is an SDK for the Shippinglabel REST API (https://shippinglabel.de). Documentation can be found
+at https://developer.dev.shippinglabel.de
 
 ## Usage
 

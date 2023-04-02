@@ -179,6 +179,15 @@ func TestAPIContext_ParcelCRUD(t *testing.T) {
 	isNoError(t, err)
 }
 
+func TestClient_AuthCodeURL(t *testing.T) {
+	initClientAndAPIContext(t)
+	url := client.AuthCodeURL("https://test.com", "")
+
+	req := newRequest(url)
+	err := client.send(context.Background(), req)
+	isNoError(t, err)
+}
+
 // Helper
 
 func isNoError(tb testing.TB, err error) {
