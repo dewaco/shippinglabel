@@ -73,7 +73,7 @@ func main() {
 	if err != nil {
 		switch err.(type) {
 		case *shippinglabel.Error:
-			// Is response error
+			// Is SL error
 			break
 		default:
 			// Is an unexpected error
@@ -81,9 +81,9 @@ func main() {
 		
 		// Another way
 		_, ok := err.(*shippinglabel.Error)
-		if ok {
-			// Is response error
-        }
-    }
+		if ok { 
+			// Is SL error
+                }
+	}
 }
 ```

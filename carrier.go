@@ -8,6 +8,7 @@ const (
 	CarrierDHL CarrierCode = "DHL"
 	CarrierDP  CarrierCode = "DP"
 	CarrierDPD CarrierCode = "DPD"
+	CarrierGLS CarrierCode = "GLS"
 )
 
 type CarrierServiceCode string
@@ -25,6 +26,11 @@ const (
 	CarrierServiceCashOnDelivery      CarrierServiceCode = "CASH_ON_DELIVERY"
 	CarrierServicePackagingReturn     CarrierServiceCode = "PACKAGING_RETURN"
 	CarrierServiceParcelOutletRouting CarrierServiceCode = "PARCEL_OUTLET_ROUTING"
+	CarrierServiceFlexDelivery        CarrierServiceCode = "FLEX_DELIVERY"
+	CarrierServiceNextDay             CarrierServiceCode = "NEXT_DAY"
+	CarrierServiceShopReturn          CarrierServiceCode = "SHOP_RETURN"
+	CarrierServiceShopDelivery        CarrierServiceCode = "SHOP_DELIVERY"
+	CarrierServiceIdentPin            CarrierServiceCode = "IDENT_PIN"
 )
 
 type Carrier struct {

@@ -188,6 +188,28 @@ func TestClient_AuthCodeURL(t *testing.T) {
 	isNoError(t, err)
 }
 
+func TestAPIContext_Metadata(t *testing.T) {
+	initClientAndAPIContext(t)
+
+	ctx := context.Background()
+	carriers := []CarrierCode{
+		CarrierDHL,
+		CarrierDP,
+		CarrierDPD,
+		CarrierGLS,
+	}
+
+	metadata, err := api.Metadata(ctx)
+	isNoError(t, err)
+	isNotNil(t, metadata)
+	for _, data := range metadata {
+
+		if !contains(carriers, data.Code) {
+			t.Fatalf("missing carrier: %s", data.Code)
+		}
+	}
+}
+
 // Helper
 
 func isNoError(tb testing.TB, err error) {
@@ -217,4 +239,14 @@ func isNil(v any) bool {
 	value := reflect.ValueOf(v)
 	kind := value.Kind()
 	return kind >= reflect.Chan && kind <= reflect.Slice && value.IsNil()
+}
+
+func contains[T comparable](s []T, v T) bool {
+	for _, t := range s {
+		if t == v {
+			return true
+		}
+	}
+
+	return false
 }
