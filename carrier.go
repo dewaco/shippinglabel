@@ -5,10 +5,11 @@ import "time"
 type CarrierCode string
 
 const (
-	CarrierDHL CarrierCode = "DHL"
-	CarrierDP  CarrierCode = "DP"
-	CarrierDPD CarrierCode = "DPD"
-	CarrierGLS CarrierCode = "GLS"
+	CarrierDHL    CarrierCode = "DHL"
+	CarrierDP     CarrierCode = "DP"
+	CarrierDPD    CarrierCode = "DPD"
+	CarrierGLS    CarrierCode = "GLS"
+	CarrierHermes CarrierCode = "HERMES"
 )
 
 type CarrierServiceCode string
@@ -34,16 +35,17 @@ const (
 )
 
 type Carrier struct {
-	Code        CarrierCode       `json:"carrierCode,omitempty"`
-	Name        string            `json:"name,omitempty"`
-	IsDefault   bool              `json:"isDefault,omitempty"`
-	Username    string            `json:"username,omitempty"`
-	UserSecret  string            `json:"userSecret,omitempty"`
-	Product     string            `json:"product,omitempty"`
-	LabelFormat string            `json:"labelFormat,omitempty"` // Default label format for shipments
-	Created     *time.Time        `json:"created,omitempty"`
-	Services    []*CarrierService `json:"services,omitempty"`   // Additional carrier services
-	Parameters  map[string]any    `json:"parameters,omitempty"` // Additional parameters for the carrier (e.h. DHL EKP)
+	Code                 CarrierCode       `json:"carrierCode,omitempty"`
+	Name                 string            `json:"name,omitempty"`
+	IsDefault            bool              `json:"isDefault,omitempty"`
+	Username             string            `json:"username,omitempty"`
+	UserSecret           string            `json:"userSecret,omitempty"`
+	UserSecretExpiration *time.Time        `json:"userSecretExpiration,omitempty"`
+	Product              string            `json:"product,omitempty"`
+	LabelFormat          string            `json:"labelFormat,omitempty"` // Default label format for shipments
+	Created              *time.Time        `json:"created,omitempty"`
+	Services             []*CarrierService `json:"services,omitempty"`   // Additional carrier services
+	Parameters           map[string]any    `json:"parameters,omitempty"` // Additional parameters for the carrier (e.h. DHL EKP)
 }
 
 type CarrierService struct {
