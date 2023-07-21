@@ -10,6 +10,7 @@ const (
 	CarrierDPD    CarrierCode = "DPD"
 	CarrierGLS    CarrierCode = "GLS"
 	CarrierHermes CarrierCode = "HERMES"
+	CarrierUPS    CarrierCode = "UPS"
 )
 
 type CarrierServiceCode string
@@ -32,6 +33,7 @@ const (
 	CarrierServiceShopReturn          CarrierServiceCode = "SHOP_RETURN"
 	CarrierServiceShopDelivery        CarrierServiceCode = "SHOP_DELIVERY"
 	CarrierServiceIdentPin            CarrierServiceCode = "IDENT_PIN"
+	CarrierServiceSaturdayDelivery    CarrierServiceCode = "SATURDAY_DELIVERY"
 )
 
 type Carrier struct {
