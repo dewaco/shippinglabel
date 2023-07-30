@@ -181,7 +181,7 @@ func TestAPIContext_ParcelCRUD(t *testing.T) {
 
 func TestClient_AuthCodeURL(t *testing.T) {
 	initClientAndAPIContext(t)
-	url := client.AuthCodeURL("https://test.com", "")
+	url := client.AuthCodeURL("https://dewabit.com", "")
 
 	req := newRequest(url)
 	err := client.send(context.Background(), req)

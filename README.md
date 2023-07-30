@@ -1,7 +1,7 @@
 # Golang SDK for the Shippinglabel REST API
 
 This Golang package is an SDK for the Shippinglabel REST API (https://shippinglabel.de). Documentation can be found
-at https://developer.dev.shippinglabel.de
+at https://developer.shippinglabel.de
 
 ## Usage
 
@@ -23,14 +23,15 @@ import (
 
 func main() {
 	// Create request client
-	client, err := shippinglabel.NewClient("CLIENT_ID", "SECRET")
+	client, err := shippinglabel.NewClient("CLIENT_ID", "CLIENT_SECRET")
 	// Handle error
 
-	// Receive an access token
+	// Create an access token
 	ctx := context.Background()
 	tk, err := client.ClientCredentials(ctx)
 	// Handle error
 
+	// Create a context
 	api, err := client.APIContext(tk)
 	// Handle error
 	

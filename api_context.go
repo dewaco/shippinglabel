@@ -263,13 +263,6 @@ func (c *APIContext) GetShipment(ctx context.Context, id int) (resp *Shipment, e
 	return resp, c.send(ctx, req)
 }
 
-// UpdateShipment updates a shipment
-// [PUT]: /shipments/{id}
-func (c *APIContext) UpdateShipment(ctx context.Context, v *Shipment) (err error) {
-	req := c.request().SetMethod(http.MethodPut).SetJSON(v).SetPathf("/shipments/%d", v.ID)
-	return c.send(ctx, req)
-}
-
 // DeleteShipment deletes a shipment
 // [DELETE]: /shipments/{id}
 func (c *APIContext) DeleteShipment(ctx context.Context, id int) (err error) {
