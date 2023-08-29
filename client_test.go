@@ -199,6 +199,7 @@ func TestAPIContext_Metadata(t *testing.T) {
 		CarrierGLS,
 		CarrierHermes,
 		CarrierUPS,
+		CarrierPostAT,
 	}
 
 	metadata, err := api.Metadata(ctx)
