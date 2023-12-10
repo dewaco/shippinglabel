@@ -53,16 +53,11 @@ func TestClient_Error(t *testing.T) {
 		t.Fatalf("expected error")
 	}
 
-	_, ok := err.(*Error)
-	if !ok {
-		t.Fatalf("expected error from type: %T", err)
-	}
-
-	switch err.(type) {
+	switch err := err.(type) {
 	case *Error:
-		break
+		return
 	default:
-		t.Fatalf("expected error from type: %T", err)
+		t.Fatalf("expected error of type *Error, got type: %T", err)
 	}
 }
 
@@ -200,6 +195,7 @@ func TestAPIContext_Metadata(t *testing.T) {
 		CarrierHermes,
 		CarrierUPS,
 		CarrierPostAT,
+		CarrierDHLExpress,
 	}
 
 	metadata, err := api.Metadata(ctx)
@@ -211,6 +207,54 @@ func TestAPIContext_Metadata(t *testing.T) {
 			t.Fatalf("missing carrier: %s", data.Code)
 		}
 	}
+}
+
+func TestAPIContext_UploadCSVFile(t *testing.T) {
+	initClientAndAPIContext(t)
+
+	csvData := []byte("Carrier\nDHL")
+	ctx := context.Background()
+
+	// Init csv profile
+	profile := &CSVProfile{
+		Encoding:   EncodingUTF8,
+		Delimiter:  ";",
+		DateFormat: "YYYY-MM-DD",
+		Name:       "Test-DEV",
+		Mapping:    make([]*Mapping, 0, 1),
+	}
+	profile.Mapping = append(profile.Mapping, &Mapping{
+		HeaderField: "Carrier",
+		ValueID:     "Carrier.Code",
+	})
+
+	// Create csv profile
+	profile, err := api.CreateCSVProfile(ctx, profile)
+	isNoError(t, err)
+	isNotNil(t, profile)
+
+	// Upload csv file
+	items, err := api.UploadCSVFile(ctx, csvData, profile.ID)
+	isNoError(t, err)
+	isNotNil(t, items)
+
+	// Check response
+	if len(items) == 0 {
+		t.Fatalf("expected non-empty items slice")
+	}
+
+	var item = items[0]
+	if item.ID == 0 {
+		t.Fatalf("expected item id")
+	}
+
+	// Delete queue item
+	err = api.DeleteQueueItem(ctx, item.ID)
+	isNoError(t, err)
+
+	// Delete csv profile
+	err = api.DeleteCSVProfile(ctx, profile.ID)
+	isNoError(t, err)
 }
 
 // Helper

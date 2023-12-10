@@ -9,6 +9,8 @@ import (
 	"sync"
 )
 
+// APIContext represents the context for making API requests with an authenticated client and token.
+// It provides methods for sending requests to different endpoints.
 type APIContext struct {
 	client     *Client
 	token      *AuthToken
@@ -197,14 +199,14 @@ func (c *APIContext) DeleteCarrier(ctx context.Context, code CarrierCode) (err e
 
 // CreateDHLProduct creates a DHL product
 // [POST]: /carriers/DHL/products
-func (c *APIContext) CreateDHLProduct(ctx context.Context, v *DHLProduct) (resp *DHLProduct, err error) {
+func (c *APIContext) CreateDHLProduct(ctx context.Context, v *Product) (resp *Product, err error) {
 	req := c.request().SetMethod(http.MethodPost).SetJSON(v).ToJSON(&resp).SetPath("/carriers/DHL/products")
 	return resp, c.send(ctx, req)
 }
 
 // UpdateDHLProduct updates a DHL product
 // [PUT]: /carriers/DHL/products/{id}
-func (c *APIContext) UpdateDHLProduct(ctx context.Context, v *DHLProduct) (err error) {
+func (c *APIContext) UpdateDHLProduct(ctx context.Context, v *Product) (err error) {
 	req := c.request().SetMethod(http.MethodPut).SetJSON(v).SetPathf("/carriers/DHL/products/%d", v.ID)
 	return c.send(ctx, req)
 }
@@ -309,4 +311,122 @@ func (c *APIContext) GetLabels(ctx context.Context, ids any) (resp *bytes.Buffer
 	resp = bytes.NewBuffer(nil)
 	req := c.request().SetMethod(http.MethodGet).ToBytesBuffer(resp).SetPathf("/shipments/labels/%s", strings.Join(sIDs, ","))
 	return resp, c.send(ctx, req)
+}
+
+// QUEUE ITEMS
+
+// ListQueueItems returns all queue items
+// [GET]: /shipments/queue
+func (c *APIContext) ListQueueItems(ctx context.Context) (resp []*ShipmentQueueItem, err error) {
+	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPath("/shipments/queue")
+	return resp, c.send(ctx, req)
+}
+
+// CreateQueueItem creates a queue item
+// [POST]: /shipments/queue
+func (c *APIContext) CreateQueueItem(ctx context.Context, v *ShipmentQueueItem) (resp *ShipmentQueueItem, err error) {
+	req := c.request().SetMethod(http.MethodPost).ToJSON(&resp).SetJSON(v).SetPath("/shipments/queue")
+	return resp, c.send(ctx, req)
+}
+
+// GetQueueItem returns a queue item
+// [GET]: /shipments/queue/{id}
+func (c *APIContext) GetQueueItem(ctx context.Context, id int) (resp *ShipmentQueueItem, err error) {
+	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPathf("/shipments/queue/%d", id)
+	return resp, c.send(ctx, req)
+}
+
+// UpdateQueueItem updates a queue item
+// [PUT]: /shipments/queue/{id}
+func (c *APIContext) UpdateQueueItem(ctx context.Context, v *ShipmentQueueItem) (err error) {
+	req := c.request().SetMethod(http.MethodPut).SetJSON(v).SetPathf("/shipments/queue/%d", v.ID)
+	return c.send(ctx, req)
+}
+
+// DeleteQueueItem deletes a queue item
+// [DELETE]: /shipments/queue/{id}
+func (c *APIContext) DeleteQueueItem(ctx context.Context, id int) (err error) {
+	req := c.request().SetMethod(http.MethodDelete).SetPathf("/shipments/queue/%d", id)
+	return c.send(ctx, req)
+}
+
+// UploadCSVFile uploads a csv file and sets the items in the shipment queue
+// [POST]: /shipments/queue/csv
+func (c *APIContext) UploadCSVFile(ctx context.Context, csv []byte, csvProfileID int) (resp []*ShipmentQueueItem, err error) {
+	req := c.request().SetMethod(http.MethodPost).SetBytes(csv).ToJSON(&resp).SetPathf("/shipments/queue/csv?profileId=%d", csvProfileID)
+	return resp, c.send(ctx, req)
+}
+
+// JOBS
+
+// ListJobs returns all jobs
+// [GET]: /shipments/jobs
+func (c *APIContext) ListJobs(ctx context.Context) (resp []*ShipmentQueueItem, err error) {
+	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPath("/shipments/jobs")
+	return resp, c.send(ctx, req)
+}
+
+// CreateJob creates a job
+// [POST]: /shipments/jobs
+func (c *APIContext) CreateJob(ctx context.Context, v *ShipmentQueueItem) (resp *ShipmentQueueItem, err error) {
+	req := c.request().SetMethod(http.MethodPost).ToJSON(&resp).SetJSON(v).SetPath("/shipments/jobs")
+	return resp, c.send(ctx, req)
+}
+
+// GetJob returns a job
+// [GET]: /shipments/jobs/{id}
+func (c *APIContext) GetJob(ctx context.Context, id int) (resp *ShipmentQueueItem, err error) {
+	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPathf("/shipments/jobs/%d", id)
+	return resp, c.send(ctx, req)
+}
+
+// UpdateJob updates a job
+// [PUT]: /shipments/jobs/{id}
+func (c *APIContext) UpdateJob(ctx context.Context, v *ShipmentQueueItem) (err error) {
+	req := c.request().SetMethod(http.MethodPut).SetJSON(v).SetPathf("/shipments/jobs/%d", v.ID)
+	return c.send(ctx, req)
+}
+
+// DeleteJob deletes a job
+// [DELETE]: /shipments/jobs/{id}
+func (c *APIContext) DeleteJob(ctx context.Context, id int) (err error) {
+	req := c.request().SetMethod(http.MethodDelete).SetPathf("/shipments/jobs/%d", id)
+	return c.send(ctx, req)
+}
+
+// CSV
+
+// ListCSVProfiles returns all csv profiles
+// [GET]: /csv/profiles
+func (c *APIContext) ListCSVProfiles(ctx context.Context) (resp []*CSVProfile, err error) {
+	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPath("/csv/profiles")
+	return resp, c.send(ctx, req)
+}
+
+// CreateCSVProfile creates a csv profile
+// [POST]: /csv/profiles
+func (c *APIContext) CreateCSVProfile(ctx context.Context, v *CSVProfile) (resp *CSVProfile, err error) {
+	req := c.request().SetMethod(http.MethodPost).ToJSON(&resp).SetJSON(v).SetPath("/csv/profiles")
+	return resp, c.send(ctx, req)
+}
+
+// GetCSVProfile returns a csv profile
+// [GET]: /csv/profiles/{id}
+func (c *APIContext) GetCSVProfile(ctx context.Context, id int) (resp *CSVProfile, err error) {
+	req := c.request().SetMethod(http.MethodGet).ToJSON(&resp).SetPathf("/csv/profiles/%d", id)
+	return resp, c.send(ctx, req)
+}
+
+// UpdateCSVProfile updates a csv profile
+// [PUT]: /csv/profiles/{id}
+func (c *APIContext) UpdateCSVProfile(ctx context.Context, v *CSVProfile) (err error) {
+	req := c.request().SetMethod(http.MethodPut).SetJSON(v).SetPathf("/csv/profiles/%d", v.ID)
+	return c.send(ctx, req)
+}
+
+// DeleteCSVProfile deletes a csv profile
+// [DELETE]: /csv/profiles/{id}
+func (c *APIContext) DeleteCSVProfile(ctx context.Context, id int) (err error) {
+	req := c.request().SetMethod(http.MethodDelete).SetPathf("/csv/profiles/%d", id)
+	return c.send(ctx, req)
 }

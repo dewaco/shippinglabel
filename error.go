@@ -14,6 +14,7 @@ type Error struct {
 	Message  string   `json:"message,omitempty"`
 	Code     string   `json:"code,omitempty"`
 	Messages []string `json:"messages,omitempty"`
+	Detail   string   `json:"detail,omitempty"`
 }
 
 func (m *Error) Error() string {

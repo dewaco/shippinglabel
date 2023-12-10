@@ -122,6 +122,14 @@ func (r *request) SetFormValues(val url.Values) *request {
 	return r.SetContentType(HeaderContentTypeForm)
 }
 
+// SetBytes sets the byte array to the request body
+func (r *request) SetBytes(b []byte) *request {
+	r.body = func() (io.ReadCloser, error) {
+		return io.NopCloser(bytes.NewReader(b)), nil
+	}
+	return r
+}
+
 // Response
 
 // ToJSON converts the JSON response to the specified variable

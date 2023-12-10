@@ -5,13 +5,14 @@ import "time"
 type CarrierCode string
 
 const (
-	CarrierDHL    CarrierCode = "DHL"
-	CarrierDP     CarrierCode = "DP"
-	CarrierDPD    CarrierCode = "DPD"
-	CarrierGLS    CarrierCode = "GLS"
-	CarrierHermes CarrierCode = "HERMES"
-	CarrierUPS    CarrierCode = "UPS"
-	CarrierPostAT CarrierCode = "POST_AT"
+	CarrierDHL        CarrierCode = "DHL"
+	CarrierDP         CarrierCode = "DP"
+	CarrierDPD        CarrierCode = "DPD"
+	CarrierGLS        CarrierCode = "GLS"
+	CarrierHermes     CarrierCode = "HERMES"
+	CarrierUPS        CarrierCode = "UPS"
+	CarrierPostAT     CarrierCode = "POST_AT"
+	CarrierDHLExpress CarrierCode = "DHL_EXPRESS"
 )
 
 type CarrierServiceCode string
@@ -39,6 +40,9 @@ const (
 	CarrierServiceNoShopAuthorization   CarrierServiceCode = "NO_SHOP_AUTHORIZATION"
 	CarrierServiceHazardousGoods        CarrierServiceCode = "HAZARDOUS_GOODS"
 	CarrierServiceFragile               CarrierServiceCode = "FRAGILE"
+	CarrierServicePremium               CarrierServiceCode = "PREMIUM"
+	CarrierServicePickup                CarrierServiceCode = "PICKUP"
+	CarrierServiceSignature             CarrierServiceCode = "SIGNATURE"
 )
 
 type Carrier struct {
