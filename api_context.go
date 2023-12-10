@@ -10,6 +10,7 @@ import (
 )
 
 // APIContext represents the context for making API requests with an authenticated client and token.
+//
 // It provides methods for sending requests to different endpoints.
 type APIContext struct {
 	client     *Client
