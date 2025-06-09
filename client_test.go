@@ -21,12 +21,12 @@ func initClientAndAPIContext(tb *testing.T) {
 
 	clientID, exists := os.LookupEnv("SHIPPINGLABEL_CLIENT_ID")
 	if !exists {
-		tb.Fatalf("could not found env: 'SHIPPINGLABEL_CLIENT_ID'")
+		tb.Fatalf("could not find env: 'SHIPPINGLABEL_CLIENT_ID'")
 	}
 
 	secret, exists := os.LookupEnv("SHIPPINGLABEL_CLIENT_SECRET")
 	if !exists {
-		tb.Fatalf("could not found env: 'SHIPPINGLABEL_CLIENT_SECRET'")
+		tb.Fatalf("could not find env: 'SHIPPINGLABEL_CLIENT_SECRET'")
 	}
 	var err error
 	client, err = NewClient(clientID, secret)
