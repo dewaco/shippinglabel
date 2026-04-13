@@ -12,8 +12,8 @@ import (
 	"golang.org/x/net/http2"
 )
 
-const productionURL = "https://api.shippinglabel.de/v2"
-const developmentURL = "https://api.dev.shippinglabel.de/v2"
+const productionURL = "https://api.shippinglabel.app/v2"
+const developmentURL = "https://api.dev.shippinglabel.app/v2"
 
 type Client struct {
 	baseURL      string

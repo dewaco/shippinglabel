@@ -202,7 +202,6 @@ func TestAPIContext_Metadata(t *testing.T) {
 	isNoError(t, err)
 	isNotNil(t, metadata)
 	for _, data := range metadata {
-
 		if !contains(carriers, data.Code) {
 			t.Fatalf("missing carrier: %s", data.Code)
 		}
