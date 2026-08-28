@@ -196,6 +196,41 @@ func (c *APIContext) DeleteCarrier(ctx context.Context, code CarrierCode) (err e
 	return c.send(ctx, req)
 }
 
+// FEDEX REGISTRATION
+
+// RegisterFedEx validates the customer's FedEx account address and starts the registration. Save
+// the carrier with its account number first. The response says whether FedEx issued the credentials
+// straight away or which second factor is still due.
+// [POST]: /carriers/FEDEX/register
+func (c *APIContext) RegisterFedEx(ctx context.Context, v *FedExRegistration) (resp *FedExRegistrationOptions, err error) {
+	req := c.request().SetMethod(http.MethodPost).SetJSON(v).ToJSON(&resp).SetPath("/carriers/FEDEX/register")
+	return resp, c.send(ctx, req)
+}
+
+// GenerateFedExPin asks FedEx to send a six digit secure code to the account holder over the given
+// channel. Only channels listed in FedExRegistrationOptions.SecureCode are accepted.
+// [POST]: /carriers/FEDEX/register/pin
+func (c *APIContext) GenerateFedExPin(ctx context.Context, option FedExPinOption) (err error) {
+	req := c.request().SetMethod(http.MethodPost).
+		SetJSON(map[string]any{"option": option}).SetPath("/carriers/FEDEX/register/pin")
+	return c.send(ctx, req)
+}
+
+// ConfirmFedExPin completes the registration with the secure code the account holder received.
+// [POST]: /carriers/FEDEX/register/confirm
+func (c *APIContext) ConfirmFedExPin(ctx context.Context, pin string) (err error) {
+	req := c.request().SetMethod(http.MethodPost).
+		SetJSON(map[string]any{"pin": pin}).SetPath("/carriers/FEDEX/register/confirm")
+	return c.send(ctx, req)
+}
+
+// ConfirmFedExInvoice completes the registration with a recent FedEx invoice instead of a code.
+// [POST]: /carriers/FEDEX/register/invoice
+func (c *APIContext) ConfirmFedExInvoice(ctx context.Context, v *FedExInvoice) (err error) {
+	req := c.request().SetMethod(http.MethodPost).SetJSON(v).SetPath("/carriers/FEDEX/register/invoice")
+	return c.send(ctx, req)
+}
+
 // CARRIER PRODUCTS
 
 // CreateDHLProduct creates a DHL product

@@ -13,6 +13,7 @@ const (
 	CarrierUPS        CarrierCode = "UPS"
 	CarrierPostAT     CarrierCode = "POST_AT"
 	CarrierDHLExpress CarrierCode = "DHL_EXPRESS"
+	CarrierFedEx      CarrierCode = "FEDEX"
 )
 
 type CarrierServiceCode string
@@ -43,6 +44,7 @@ const (
 	CarrierServicePremium               CarrierServiceCode = "PREMIUM"
 	CarrierServicePickup                CarrierServiceCode = "PICKUP"
 	CarrierServiceSignature             CarrierServiceCode = "SIGNATURE"
+	CarrierServiceCarbonNeutral         CarrierServiceCode = "CARBON_NEUTRAL"
 )
 
 type Carrier struct {
