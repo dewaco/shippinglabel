@@ -157,6 +157,16 @@ parcel := &shippinglabel.Parcel{
 
 Customs information is mandatory for FedEx whenever the shipment crosses a customs border.
 
+Two obligations come with the Integrator program and apply to your own interface as well. Every
+screen that shows a FedEx logo, trademark or product name has to carry the attribution
+`FedEx service marks are owned by Federal Express Corporation and are used by permission.` at 8pt
+or larger, in that exact wording and untranslated. And the term "insurance" must not be used for
+FedEx: `ADDITIONAL_INSURANCE` sets the declared value, which is what FedEx calls extended
+liability.
+
+`CASH_ON_DELIVERY` is not available for FedEx. The service was withdrawn, so an entry for it is
+dropped from the shipment rather than sent on.
+
 ### Handle Response Error
 
 ```go
